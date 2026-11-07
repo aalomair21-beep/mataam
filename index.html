@@ -1,8 +1,3 @@
-صلحتها. صار كل مكان مكتوب فيه **حلال** بدال «المطاعم»: العنوان، والاسم تحت الأيقونة، والزر صار **«افتح حلال»**. وحدثت نسخة Claude.
-
-ولنسخة GitHub، الصق هذا بدال اللي قبل، بنفس الخطوات: ⋯، وبعدها In place، وتحديد الكل، ومسح، ولصق، و Commit:
-
-```html
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -26,8 +21,8 @@
   p { margin:0 0 22px; opacity:.85; line-height:1.7; }
   .steps { background:rgba(255,255,255,.12); border-radius:18px; padding:16px 18px; text-align:right; line-height:2; font-size:17px; }
   .steps b { color:#ffd84d; }
-  .tip { margin-top:14px; font-size:15px; line-height:1.8; opacity:.9; }
-  .tip a { color:#ffd84d; font-weight:800; }
+  .tip { margin-top:22px; font-size:15px; line-height:1.8; opacity:.9; }
+  .tip a.login { display:block; margin-top:10px; padding:12px; border-radius:14px; background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.5); color:#fff; font-weight:800; text-decoration:none; }
   a.btn { display:block; margin-top:18px; background:#fff; color:var(--blue); font-weight:800; font-size:18px;
     padding:15px; border-radius:16px; text-decoration:none; }
 </style>
@@ -43,8 +38,8 @@
     ٢. اختار <b>إضافة إلى الشاشة الرئيسية</b><br>
     ٣. اضغط <b>إضافة</b> ✅
   </div>
-  <div class="tip">✍️ تبي تضيف مطاعم وتعدّل؟<br>سجّل دخول على <a href="https://claude.ai/login">claude.ai</a> من Safari بنفس الإيميل اللي انضفت فيه</div>
-  <a class="btn" id="go" href="https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF">افتح حلال</a>
+  <a class="btn" id="go" href="https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF">حيّاك 👋 افتح تطبيق حلال</a>
+  <div class="tip">✍️ تبي تضيف مطاعم وتعدّل وتحط أدلة؟<br>سجّل دخولك بـ Claude من Safari بنفس إيميلك اللي انضفت فيه 👇<a class="login" href="https://claude.ai/login">🔑 سجّل دخول بـ Claude</a></div>
 </div>
 <script>
   var target = "https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF";
@@ -54,4 +49,3 @@
 </script>
 </body>
 </html>
-```
