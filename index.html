@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" href="1E904A0A-1E49-4FB0-8661-45C44605B150.png">
 <link rel="icon" href="1E904A0A-1E49-4FB0-8661-45C44605B150.png">
 <style>
+  :root { --blue:#1d4fbf; }
   * { box-sizing: border-box; }
   body { margin:0; min-height:100vh; font-family:-apple-system, "SF Arabic", "Segoe UI", Tahoma, sans-serif;
     background: linear-gradient(180deg,#0d3c8f,#1d63d6); color:#fff; display:flex; align-items:center; justify-content:center; padding:24px; }
@@ -42,7 +43,16 @@
   var target = "https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF";
   var standalone = window.navigator.standalone === true ||
     (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-  if (standalone) { location.replace(target); }
+  var path = standalone ? "/فتح-التطبيق" : "/زيارة-الرابط";
+  var done = false, go = function () { if (!done && standalone) { done = true; location.replace(target); } };
+  try {
+    var px = new Image();
+    px.onload = px.onerror = go;
+    px.src = "https://halalkw.goatcounter.com/count?p=" + encodeURIComponent(path) +
+      "&t=" + encodeURIComponent(standalone ? "فتح التطبيق" : "زيارة الرابط") +
+      "&r=" + encodeURIComponent(document.referrer) + "&s=" + screen.width + "&rnd=" + Math.random().toString(36).slice(2);
+  } catch (e) {}
+  setTimeout(go, 900);
 </script>
 </body>
 </html>
