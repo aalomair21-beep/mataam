@@ -2432,7 +2432,7 @@ function exportLists() {
   return { logos, evs };
 }
 async function exportLogoSheet(items) {
-  const C = 6, T = 180, H = 236, W = C * T, rows = Math.ceil(items.length / C);
+  const C = 5, T = 200, H = 250, W = C * T, rows = Math.ceil(items.length / C);
   const cv = document.createElement("canvas"); cv.width = W; cv.height = rows * H + 10; const g = cv.getContext("2d");
   g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
   for (let i = 0; i < items.length; i++) {
@@ -2462,26 +2462,12 @@ async function exportEvSheets(items) {
   return out;
 }
 async function openExport() {
-  const { logos, evs } = exportLists();
-  openSheet(`<h3>📦 صور لنسخة التصفّح<button class="x" type="button">✕</button></h3>
-    <div class="hint">ناقص <b>${logos.length}</b> لوقو و<b>${evs.length}</b> صورة دليل بنسخة التصفّح. اضغط «جهّز»، وبعدين اضغط مطوّل على كل صورة واحفظها، ودزها لـ Claude.</div>
-    ${logos.length || evs.length ? `<button type="button" class="expgo" id="expMake">📦 جهّز الصور</button>` : `<div class="hint">✅ ما في شي ناقص.</div>`}
-    <div class="expimgs" id="expOut"></div><div class="msg" id="msg"></div>`);
-  const mk = document.getElementById("expMake"); if (!mk) return;
-  mk.onclick = async () => {
-    mk.disabled = true; mk.textContent = "⏳ قاعد أجهّز…";
-    const urls = [];
-    for (let i = 0; i < logos.length; i += 36) urls.push(await exportLogoSheet(logos.slice(i, i + 36)));
-    urls.push(...await exportEvSheets(evs));
-    document.getElementById("expOut").innerHTML = urls.map((u, i) => `<div class="hint">صورة ${i + 1} من ${urls.length}</div><img src="${u}" alt="">`).join("")
-      + `<button type="button" class="expgo" id="expDone">✅ دزّيتها كلها لـ Claude</button><div class="hint">اضغطه بعد ما تدزها، عشان المرة الجاية يطلع لك بس الجديد.</div>`;
-    mk.remove();
-    document.getElementById("expDone").onclick = async () => {
-      await addEdit({ rid: "_export", field: "exported", kind: "logo", rids: [...new Set(logos.map(x => x.r.id))], at: Date.now() });
-      await addEdit({ rid: "_export", field: "exported", kind: "ev", rids: [...new Set(evs.map(x => x.r.id))], at: Date.now() + 1 });
-      toast("✅ تمام، انحفظ"); closeSheet && closeSheet();
-    };
-  };
+  const { logos } = exportLists();
+  if (!logos.length) { toast("✅ كل اللوقوهات موجودة بنسخة التصفّح"); return; }
+  toast("⏳ قاعد أجهّز " + logos.length + " لوقو…");
+  const url = await exportLogoSheet(logos.slice(0, 36));
+  openLightbox(url);
+  setTimeout(() => toast("📸 صوّر الشاشة الحين ودزها لـ Claude"), 600);
 }
 
 (async () => {
