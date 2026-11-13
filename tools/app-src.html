@@ -424,7 +424,9 @@
   .offbar { position: sticky; top: 0; z-index: 50; background: #33301f; color: #ffe08a; font-size: 13.5px; font-weight: 700; text-align: center; padding: 8px 12px; }
   .qrbtn { width: 38px; padding: 0 !important; font-size: 18px; display: grid; place-items: center; }
   #statsBtn { text-decoration: none; }
-  #statsBtn[hidden] { display: none; }
+  #statsBtn[hidden], #expBtn[hidden] { display: none; }
+  .expimgs img { width: 100%; border-radius: 12px; margin: 8px 0; border: 1px solid rgba(0,0,0,.1); }
+  .expgo { width: 100%; padding: 13px; border-radius: 14px; border: 0; background: var(--brand); color: #fff; font-weight: 800; font-size: 16px; margin-top: 8px; }
   .qrimg { width: min(78vw, 320px); border-radius: 22px; box-shadow: 0 8px 26px rgba(0,0,0,.15); }
 </style>
 </head>
@@ -432,7 +434,7 @@
 <div class="wrap">
   <header class="hero">
     <div class="hero-top">
-      <div style="display:flex;gap:8px"><a class="pill-btn qrbtn" id="statsBtn" href="https://halalkw.goatcounter.com" target="_blank" rel="noopener" hidden aria-label="الإحصائيات">📊</a><button class="pill-btn qrbtn" id="qrBtn" type="button" aria-label="كود QR للتطبيق">▦</button><button class="pill-btn" id="themeBtn" type="button"></button></div>
+      <div style="display:flex;gap:8px"><a class="pill-btn qrbtn" id="statsBtn" href="https://halalkw.goatcounter.com" target="_blank" rel="noopener" hidden aria-label="الإحصائيات">📊</a><button class="pill-btn qrbtn" id="expBtn" type="button" hidden aria-label="صدّر الصور لنسخة التصفح">📦</button><button class="pill-btn qrbtn" id="qrBtn" type="button" aria-label="كود QR للتطبيق">▦</button><button class="pill-btn" id="themeBtn" type="button"></button></div>
       <button class="pill-btn ask" id="qaBtn" type="button">❓ اسأل · 📷</button>
     </div>
     <div class="hero-inner">
@@ -2407,6 +2409,81 @@ window.addEventListener("online", () => offlineBar(false));
 // ===== الاتصال =====
 render();
 if (!navigator.onLine) offlineBar(true);
+
+// ===== تصدير الصور لنسخة التصفّح (للمالك بس) =====
+const VIEW_HAVE_LOGO = new Set(["darjasem", "shawarmamahboob", "uabosayyah", "uachar01", "uagnii01", "uayoushbaitna", "ubaitnoura", "ubashamella", "ubastooq01", "ubbqcorner", "ubestbreast", "ubinyaqoub", "ubozaid01", "uburgerinn", "uchickenmore", "ucrustpizzeria", "udarbalzalag", "ueightysix", "ufilled01", "ufillet01", "ugancha01", "ugranic01", "uhabib1980", "uhappyburg", "ujustburgers", "ukhaneen", "ukharof01", "ukine01", "ukingsofmaillard", "ulikenchicken", "uliwan", "umachbosalshayeb", "umachbosfactory", "umalahvillage", "umamamariam", "umamas01", "umaraheb01", "umeatandmeat", "umillas", "umirqab", "umvyv7sh5", "umvyxocvi", "umvzi2q4p", "umvzi9jpk", "umvzic3ei", "umvziukij", "umvziy488", "umvzmu045", "umw073wcr", "umw0rsxqp", "uobona01", "uonethird", "upamandcow", "uq8ycook", "usabeenat1", "usabroso", "usamoona01", "uselim01", "ushekabeka", "ushirinkhanah", "uswaikhat", "utabi01", "uthebutchery", "utikka01", "uvillafayrouz", "uwadyraydan", "uzaina01"]);
+const VIEW_HAVE_EV = new Set(["shawarmamahboob", "uabosayyah", "uachar01", "uagnii01", "uayoushbaitna", "ubaitnoura", "ubashamella", "ubastooq01", "ubbqcorner", "ubestbreast", "ubinyaqoub", "uburgerinn", "uchickenmore", "ucrustpizzeria", "udarbalzalag", "ueightysix", "ufilled01", "ufillet01", "ugancha01", "ugranic01", "uhabib1980", "uhappyburg", "ujustburgers", "ukhaneen", "ukine01", "ukingsofmaillard", "ulikenchicken", "uliwan", "umachbosalshayeb", "umachbosfactory", "umalahvillage", "umamamariam", "umamas01", "umaraheb01", "umeatandmeat", "umillas", "umirqab", "umvyxocvi", "umvziukij", "umvzmu045", "umvzn167k", "umw073wcr", "umw2ljcpf", "uobona01", "uonethird", "upamandcow", "uq8ycook", "usabroso", "usamoona01", "uselim01", "ushawcut01", "ushekabeka", "ushirinkhanah", "uswaikhat", "utabi01", "uthebutchery", "utikka01", "uvillafayrouz", "uwadyraydan", "uzaina01"]);
+function exportedSet(kind) { const st = new Set(); for (const e of edits) if (e.field === "exported" && e.kind === kind) for (const r of e.rids || []) st.add(r); return st; }
+function exportLists() {
+  const all = restaurants().slice().sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const doneL = exportedSet("logo"), doneE = exportedSet("ev");
+  const logos = all.filter(r => r.logo && !VIEW_HAVE_LOGO.has(r.id) && !doneL.has(r.id)).map(r => ({ r, id: r.logo }));
+  const evs = [];
+  for (const r of all) {
+    if (VIEW_HAVE_EV.has(r.id) || doneE.has(r.id)) continue;
+    const ids = [];
+    for (const e of edits.filter(e => e.rid === r.id).sort((a, b) => a.at - b.at)) {
+      if (!["add", "verdict", "meat", "chicken"].includes(e.field)) continue;
+      for (const x of e.evidence || []) if (x.type === "image" && x.assetId) ids.push(evId(x.assetId));
+      if (e.assetId && e.evType === "image") ids.push(evId(e.assetId));
+    }
+    [...new Set(ids)].forEach((id, k) => evs.push({ r, id, k }));
+  }
+  return { logos, evs };
+}
+async function exportLogoSheet(items) {
+  const C = 6, T = 180, H = 236, W = C * T, rows = Math.ceil(items.length / C);
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = rows * H + 10; const g = cv.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
+  for (let i = 0; i < items.length; i++) {
+    const x = (i % C) * T, y = Math.floor(i / C) * H;
+    try { const im = await loadImg("/_blob/" + items[i].id); g.drawImage(im, x + 10, y + 10, T - 20, T - 20); } catch (e) {}
+    g.fillStyle = "#000"; g.textAlign = "center"; g.font = "bold 17px sans-serif"; g.fillText(items[i].r.id, x + T / 2, y + T + 12);
+    g.font = "15px sans-serif"; g.fillText(String(items[i].r.name).slice(0, 18), x + T / 2, y + T + 34);
+  }
+  return cv.toDataURL("image/jpeg", .92);
+}
+async function exportEvSheets(items) {
+  const out = [], W = 1080, per = 4;
+  for (let s0 = 0; s0 < items.length; s0 += per) {
+    const part = items.slice(s0, s0 + per), ims = [];
+    for (const it of part) { try { ims.push(await loadImg("/_blob/" + it.id)); } catch (e) { ims.push(null); } }
+    const cw = W / 2, hs = ims.map(im => im ? Math.min(1500, Math.round(im.height * cw / im.width)) : 200);
+    const rowH = [Math.max(hs[0] || 0, hs[1] || 0), Math.max(hs[2] || 0, hs[3] || 0)].map(h => h ? h + 50 : 0);
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = rowH[0] + rowH[1]; const g = cv.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, W, cv.height);
+    part.forEach((it, i) => {
+      const x = (i % 2) * cw, y = i < 2 ? 0 : rowH[0];
+      g.fillStyle = "#000"; g.textAlign = "center"; g.font = "bold 22px sans-serif"; g.fillText(it.r.id + " · " + (it.k + 1) + " · " + String(it.r.name).slice(0, 16), x + cw / 2, y + 32);
+      if (ims[i]) g.drawImage(ims[i], 0, 0, ims[i].width, Math.min(ims[i].height, ims[i].width * 1500 / cw), x + 4, y + 44, cw - 8, hs[i]);
+    });
+    out.push(cv.toDataURL("image/jpeg", .9));
+  }
+  return out;
+}
+async function openExport() {
+  const { logos, evs } = exportLists();
+  openSheet(`<h3>📦 صور لنسخة التصفّح<button class="x" type="button">✕</button></h3>
+    <div class="hint">ناقص <b>${logos.length}</b> لوقو و<b>${evs.length}</b> صورة دليل بنسخة التصفّح. اضغط «جهّز»، وبعدين اضغط مطوّل على كل صورة واحفظها، ودزها لـ Claude.</div>
+    ${logos.length || evs.length ? `<button type="button" class="expgo" id="expMake">📦 جهّز الصور</button>` : `<div class="hint">✅ ما في شي ناقص.</div>`}
+    <div class="expimgs" id="expOut"></div><div class="msg" id="msg"></div>`);
+  const mk = document.getElementById("expMake"); if (!mk) return;
+  mk.onclick = async () => {
+    mk.disabled = true; mk.textContent = "⏳ قاعد أجهّز…";
+    const urls = [];
+    for (let i = 0; i < logos.length; i += 36) urls.push(await exportLogoSheet(logos.slice(i, i + 36)));
+    urls.push(...await exportEvSheets(evs));
+    document.getElementById("expOut").innerHTML = urls.map((u, i) => `<div class="hint">صورة ${i + 1} من ${urls.length}</div><img src="${u}" alt="">`).join("")
+      + `<button type="button" class="expgo" id="expDone">✅ دزّيتها كلها لـ Claude</button><div class="hint">اضغطه بعد ما تدزها، عشان المرة الجاية يطلع لك بس الجديد.</div>`;
+    mk.remove();
+    document.getElementById("expDone").onclick = async () => {
+      await addEdit({ rid: "_export", field: "exported", kind: "logo", rids: [...new Set(logos.map(x => x.r.id))], at: Date.now() });
+      await addEdit({ rid: "_export", field: "exported", kind: "ev", rids: [...new Set(evs.map(x => x.r.id))], at: Date.now() + 1 });
+      toast("✅ تمام، انحفظ"); closeSheet && closeSheet();
+    };
+  };
+}
+
 (async () => {
   try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch (e) { db = null; }
   try { assets = window.claude && window.claude.use ? await window.claude.use("assets") : null; } catch (e) { assets = null; }
@@ -2422,7 +2499,7 @@ if (!navigator.onLine) offlineBar(true);
     }
   } catch (e) { userCap = null; }
   if (amEditor) document.getElementById("trashBtn").hidden = false;
-  if (amOwner) document.getElementById("statsBtn").hidden = false;
+  if (amOwner) { document.getElementById("statsBtn").hidden = false; const xb = document.getElementById("expBtn"); xb.hidden = false; xb.onclick = openExport; }
   document.getElementById("trashBtn").onclick = openTrash;
   if (!db) { if (fromCache && !navigator.onLine) offlineBar(true); render(); return; }
   db.collection("edits").onSnapshot(snap => {

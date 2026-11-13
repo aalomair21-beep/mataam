@@ -15,7 +15,7 @@ for (const [rid,m] of Object.entries(media)) {
   }
 }
 const css=`
-  body.view #addBtn, body.view #askBtn, body.view #undoBtn, body.view #qaBtn, body.view #trashBtn, body.view #statsBtn,
+  body.view #addBtn, body.view #askBtn, body.view #undoBtn, body.view #qaBtn, body.view #trashBtn, body.view #statsBtn, body.view #expBtn,
   body.view .act[data-act="edit"], body.view .act[data-act="undo1"], body.view .act[data-act="del"], body.view .act[data-act="report"],
   body.view .act[data-act="menu"], body.view .act[data-act="shareimg"], body.view .logo .addp, body.view #emptyAdd { display:none !important; }
   .viewbar { margin: 10px 14px 0; padding: 11px 14px; border-radius: 16px; background: var(--card, #fff); box-shadow: 0 2px 10px rgba(0,0,0,.08); font-size: 14px; line-height: 1.7; text-align: center; }
