@@ -1747,7 +1747,7 @@ const noteUI = (v = "") => `<div class="lbl">📝 ملاحظة (اختياري)<
 
 let sampleFn = null, sampleImgMax = 0;
 let pickedImgs = [];
-let aiCrops = null, aiLogo = null, pendingLogoId = null, aiNote = "";
+let aiNoInfo = [], aiCrops = null, aiLogo = null, pendingLogoId = null, aiNote = "";
 
 function setOpt(root, name, v) {
   const g = root.querySelector(`.opts[data-group="${name}"]`); if (!g) return;
@@ -1769,7 +1769,7 @@ function evidenceUI() {
 }
 
 function bindEvidenceUI(root, onImages) {
-  pickedImgs = []; aiCrops = null; aiLogo = null; pendingLogoId = null; aiNote = ""; aiRes = null;
+  pickedImgs = []; aiNoInfo = []; aiCrops = null; aiLogo = null; pendingLogoId = null; aiNote = ""; aiRes = null;
   const inp = root.querySelector("#evImgs"), th = root.querySelector("#thumbs");
   const draw = () => { th.innerHTML = pickedImgs.map((f, i) => `<div class="th"><img src="${URL.createObjectURL(f)}" alt=""><button type="button" data-i="${i}">✕</button></div>`).join(""); };
   inp.onchange = () => { pickedImgs.push(...inp.files); inp.value = ""; draw(); if (onImages) onImages(); };
@@ -1913,6 +1913,7 @@ async function collectEvidence(root, status) {
     if (!pendingLogoId && !aiLogo && !pickedLogo) {
       try { const av = await detectAvatar(pickedImgs[i]); if (av) pendingLogoId = (await assets.upload(await cropBlob(pickedImgs[i], av, 512), { type: "image/jpeg" })).id; } catch (e) {}
     }
+    if (pickedImgs.length > 1 && aiNoInfo.includes(i) && aiNoInfo.length < pickedImgs.length) continue; // صورة للوجو بس، مو دليل
     const out = aiCrops && aiCrops[i] ? await cropBlob(base, aiCrops[i]) : base;
     const r = await assets.upload(out, { type: "image/jpeg" });
     ev.push({ type: "image", assetId: r.id });
@@ -1949,8 +1950,9 @@ const AI_PROMPT = `الصور المرفقة لقطات شاشة من حساب �
 6) "questions": أي شي ما فهمته أو مو واضح (كلمة مقصوصة، بلد مو واضح، صنف ما تعرف نوعه، صورة ضبابية): اكتب سؤال قصير بالعامية الكويتية للمستخدم. إذا كل شي واضح: [].
 7) "crops": لكل صورة بنفس ترتيبها، المستطيل اللي فيه المعلومة المفيدة بس، بدون شريط الساعة فوق ولا الأزرار والكيبورد تحت: [[top, left, bottom, right], ...] كنسب من 0 إلى 1.
 8) "logo": صورة حساب المطعم أو لوجوه: دوّر على الدائرة اللي فيها صورة الحساب (كبيرة بصفحة البروفايل، أو صغيرة فوق يسار الستوري/البوست جنب اسم الحساب)، أو أي لوجو واضح. اختار الأوضح والأكبر: [رقم الصورة من 0, top, left, bottom, right] مربع ضيق حول الدائرة/اللوجو بالضبط (بدون الإطار الملون للستوري وبدون كتابة). إذا ما في أبد: null.
+9) "noinfo": أرقام الصور (من 0) اللي ما فيها أي معلومة عن مصدر اللحم أو الدجاج، مثل صفحة البروفايل اللي انرسلت عشان اللوجو بس: [1]. إذا كل الصور فيها معلومات: [].
 رد بـ JSON بس:
-{"lines": ["..."], "name": "", "name_en": "", "types": [], "items": [{"item": "صدر دجاج", "kind": "chicken", "countries": ["الكويت", "الإمارات"], "fresh": false, "state": "مجمد", "src": "CHICKEN BREAST FROZEN Kuwait & UAE"}], "none": [], "questions": [], "crops": [], "logo": null}`;
+{"lines": ["..."], "name": "", "name_en": "", "types": [], "items": [{"item": "صدر دجاج", "kind": "chicken", "countries": ["الكويت", "الإمارات"], "fresh": false, "state": "مجمد", "src": "CHICKEN BREAST FROZEN Kuwait & UAE"}], "none": [], "questions": [], "crops": [], "logo": null, "noinfo": []}`;
 
 // الحكم يطلع من الكود، مو من النموذج
 const C_ALIAS = { "عمان": "عُمان", "سلطنة عمان": "عُمان", "الامارات": "الإمارات", "امارات": "الإمارات", "اماراتي": "الإمارات", "الأمارات": "الإمارات", "امريكا": "أمريكا", "الولايات المتحدة": "أمريكا", "استراليا": "أستراليا", "البرازيل": "البرازيل", "برازيل": "البرازيل", "باراغواي": "الباراغواي", "الباراجواي": "الباراغواي", "الاردن": "الأردن", "اوكرانيا": "أوكرانيا", "المملكة العربية السعودية": "السعودية", "سعودي": "السعودية", "كويتي": "الكويت", "تركي": "تركيا" };
@@ -2018,6 +2020,7 @@ async function aiRead(root, mode) {
     }
     const tx = root.querySelector("#evText");
     const okBox = b => Array.isArray(b) && b.length === 4 && b.every(v => typeof v === "number" && v >= 0 && v <= 1) && b[2] - b[0] > 0.05 && b[3] - b[1] > 0.05;
+    aiNoInfo = Array.isArray(res?.noinfo) ? res.noinfo.filter(n => Number.isInteger(n)) : [];
     aiCrops = Array.isArray(res?.crops) ? res.crops.map(b => okBox(b) ? b : null) : null;
     aiLogo = Array.isArray(res?.logo) && res.logo.length === 5 && Number.isInteger(res.logo[0]) && okBox(res.logo.slice(1)) ? res.logo : null;
     const lines = Array.isArray(res?.lines) ? res.lines.map(String).filter(Boolean) : [];
