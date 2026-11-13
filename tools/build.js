@@ -25,7 +25,7 @@ const css=`
 s=s.split("/_blob/").join("img/");
 s=s.replace("</style>", css+"</style>");
 s=s.replace(/<body([^>]*)>/, (m,a)=>`<body${a.replace(/class="([^"]*)"/,'class="$1 view"')}${/class=/.test(a)?"":' class="view"'}>
-<div class="viewbar">👀 هذي نسخة التصفّح، تفتح لأي أحد بدون تسجيل<small>آخر تحديث: ${stamp}</small><a href="https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF" target="_blank" rel="noopener">✏️ تبي تضيف أو تعدّل؟ النسخة الكاملة</a></div>`);
+<div class="viewbar">👀 هذي نسخة التصفّح، تفتح لأي أحد بدون تسجيل<small>آخر تحديث: ${stamp}</small><a href="index.html?mode=full">✏️ تبي تضيف أو تعدّل؟ النسخة الكاملة</a><small>(إذا ضغطته، الأيقونة بتفتح لك النسخة الكاملة على طول بعدين)</small></div>`);
 s=s.replace("(async () => {", "window.HALAL_SNAP = "+JSON.stringify(snap)+";\n(async () => {\n  if (window.HALAL_SNAP) { edits = window.HALAL_SNAP.map((e, i) => ({ id: \"s\" + i, ...e })); try { loadRules(); } catch (e) {} render(); try { checkNews(); } catch (e) {} return; }");
 // goatcounter
 s=s.replace("</body>", `<script>try{var px=new Image();var sa=window.navigator.standalone===true||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches);px.src="https://halalkw.goatcounter.com/count?p="+encodeURIComponent(sa?"/فتح-التطبيق":"/تصفح")+"&t="+encodeURIComponent(sa?"فتح التطبيق":"تصفح")+"&s="+screen.width+"&rnd="+Math.random().toString(36).slice(2);}catch(e){}</script>\n</body>`);

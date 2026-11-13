@@ -42,7 +42,12 @@
   <div class="tip">✍️ للي يضيفون ويعدّلون بس: النسخة الكاملة تحتاج تسجيل Claude 👇<a class="login" href="https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF">✏️ النسخة الكاملة</a></div>
 </div>
 <script>
-  var target = "app.html";
+  var FULL = "https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF";
+  var mode = (location.search.match(/mode=(full|view)/) || [])[1];
+  try { if (mode) localStorage.setItem("halal-mode", mode); } catch (e) {}
+  var pref = mode; try { pref = pref || localStorage.getItem("halal-mode"); } catch (e) {}
+  if (mode === "full") { location.replace(FULL); }
+  var target = pref === "full" ? FULL : "app.html";
   var standalone = window.navigator.standalone === true ||
     (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
   var path = standalone ? "/فتح-التطبيق" : "/زيارة-الرابط";
