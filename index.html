@@ -22,6 +22,7 @@
   .steps { background:rgba(255,255,255,.12); border-radius:18px; padding:16px 18px; text-align:right; line-height:2; font-size:17px; }
   .steps b { color:#ffd84d; }
   .tip { margin-top:22px; font-size:15px; line-height:1.8; opacity:.9; }
+  a.browse { display:block; margin-top:18px; padding:15px; border-radius:16px; background:#ffd84d; color:#0d3c8f; font-weight:900; font-size:18px; text-decoration:none; }
   .tip a.login { display:block; margin-top:10px; padding:12px; border-radius:14px; background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.5); color:#fff; font-weight:800; text-decoration:none; }
 </style>
 </head>
@@ -37,18 +38,20 @@
     ٣. خلّ <b>فتح كتطبيق ويب</b> شغّال، واضغط <b>إضافة</b> ✅<br>
     ٤. افتح <b>حلال</b> من شاشتك 🐪
   </div>
-  <div class="tip">✍️ تبي تضيف مطاعم وتعدّل وتحط أدلة؟<br>سجّل دخولك بـ Claude من Safari بنفس إيميلك اللي انضفت فيه 👇<a class="login" href="https://claude.ai/login">🔑 سجّل دخول بـ Claude</a></div>
+  <a class="login browse" href="app.html">👀 تصفّح المطاعم الحين</a>
+  <div class="tip">✍️ للي يضيفون ويعدّلون بس: النسخة الكاملة تحتاج تسجيل Claude 👇<a class="login" href="https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF">✏️ النسخة الكاملة</a></div>
 </div>
 <script>
-  var target = "https://claude.ai/artifact/Mo9PveYVKT7zgCR16x7RVF";
+  var target = "app.html";
   var standalone = window.navigator.standalone === true ||
     (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
   var path = standalone ? "/فتح-التطبيق" : "/زيارة-الرابط";
   var done = false, go = function () { if (!done && standalone) { done = true; location.replace(target); } };
+  if (standalone) go();
   try {
     var px = new Image();
     px.onload = px.onerror = go;
-    px.src = "https://halalkw.goatcounter.com/count?p=" + encodeURIComponent(path) +
+    if (!standalone) px.src = "https://halalkw.goatcounter.com/count?p=" + encodeURIComponent(path) +
       "&t=" + encodeURIComponent(standalone ? "فتح التطبيق" : "زيارة الرابط") +
       "&r=" + encodeURIComponent(document.referrer) + "&s=" + screen.width + "&rnd=" + Math.random().toString(36).slice(2);
   } catch (e) {}
