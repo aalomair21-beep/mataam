@@ -13,14 +13,14 @@
     --brand: #1d4fbf; --ok: #2f7a43; --okbg: #e3f2e7; --no: #b3261e; --nobg: #fbe4e1; --unk: #a8977f; --warn: #9a6a10; --warnbg: #fdf3dc;
     --hero1: #1d63d6; --hero2: #0d3c8f;
     --c-chicken: #e89a2c; --c-meat: #c8452f; --c-kw: #2f8a57; --c-rice: #d4a017; --c-fried: #e0662a;
-    --c-sand: #2a8f8f; --c-grill: #b5482a; --c-burger: #8f5a2a; --c-healthy: #6aa636; --c-asian: #c2185b; --c-pizza: #d84315; --c-butcher: #8e2430; --c-market: #b86e00; --c-breakfast: #c9a227; --c-pies: #b5651d; --c-indian: #e07b00; --c-steak: #8b2c1f; --c-pasta: #c08a1e; --c-fresh: #2e8b57; --c-frozen: #2a6fb0; --c-cafe: #7b5236; --c-pending: #8a63c9; --c-you: #3a6ea5; --c-all: #1d4fbf;
+    --c-sand: #2a8f8f; --c-grill: #b5482a; --c-burger: #8f5a2a; --c-healthy: #6aa636; --c-asian: #c2185b; --c-pizza: #d84315; --c-butcher: #8e2430; --c-market: #b86e00; --c-breakfast: #c9a227; --c-pies: #b5651d; --c-indian: #e07b00; --c-mexican: #2f8f46; --c-steak: #8b2c1f; --c-pasta: #c08a1e; --c-fresh: #2e8b57; --c-frozen: #2a6fb0; --c-cafe: #7b5236; --c-pending: #8a63c9; --c-you: #3a6ea5; --c-all: #1d4fbf;
   }
   html[data-theme="dark"] {
     --bg: #0b1220; --card: #131c2e; --ink: #e6ecf7; --muted: #93a1b8; --line: #24304a; --soft: #1a2438;
     --brand: #7fa8ff; --ok: #8cc79a; --okbg: #16302a; --no: #f08a8a; --nobg: #3a1c24; --unk: #8a96ab; --warn: #e2bc72; --warnbg: #33301f;
     --hero1: #16306b; --hero2: #0a1735;
     --c-chicken: #f2b25a; --c-meat: #ef7a63; --c-kw: #5fc58a; --c-rice: #ecc444; --c-fried: #f08a52;
-    --c-sand: #5cc6c6; --c-grill: #f08566; --c-burger: #d39a62; --c-healthy: #9ad367; --c-asian: #f06292; --c-pizza: #ff8a65; --c-butcher: #e57373; --c-market: #f2b84b; --c-breakfast: #f0d264; --c-pies: #e0a060; --c-indian: #ffad4d; --c-steak: #f0907e; --c-pasta: #e8bd5c; --c-fresh: #6fd39a; --c-frozen: #7fb6ef; --c-cafe: #c89a74; --c-pending: #b896ee; --c-you: #7fb0e6; --c-all: #7fa8ff;
+    --c-sand: #5cc6c6; --c-grill: #f08566; --c-burger: #d39a62; --c-healthy: #9ad367; --c-asian: #f06292; --c-pizza: #ff8a65; --c-butcher: #e57373; --c-market: #f2b84b; --c-breakfast: #f0d264; --c-pies: #e0a060; --c-indian: #ffad4d; --c-mexican: #7ed492; --c-steak: #f0907e; --c-pasta: #e8bd5c; --c-fresh: #6fd39a; --c-frozen: #7fb6ef; --c-cafe: #c89a74; --c-pending: #b896ee; --c-you: #7fb0e6; --c-all: #7fa8ff;
   }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
@@ -28,7 +28,7 @@
       --brand: #7fa8ff; --ok: #8cc79a; --okbg: #16302a; --no: #f08a8a; --nobg: #3a1c24; --unk: #8a96ab; --warn: #e2bc72; --warnbg: #33301f;
       --hero1: #16306b; --hero2: #0a1735;
       --c-chicken: #f2b25a; --c-meat: #ef7a63; --c-kw: #5fc58a; --c-rice: #ecc444; --c-fried: #f08a52;
-      --c-sand: #5cc6c6; --c-grill: #f08566; --c-burger: #d39a62; --c-healthy: #9ad367; --c-asian: #f06292; --c-pizza: #ff8a65; --c-butcher: #e57373; --c-market: #f2b84b; --c-breakfast: #f0d264; --c-pies: #e0a060; --c-indian: #ffad4d; --c-steak: #f0907e; --c-pasta: #e8bd5c; --c-fresh: #6fd39a; --c-frozen: #7fb6ef; --c-cafe: #c89a74; --c-pending: #b896ee; --c-you: #7fb0e6; --c-all: #7fa8ff;
+      --c-sand: #5cc6c6; --c-grill: #f08566; --c-burger: #d39a62; --c-healthy: #9ad367; --c-asian: #f06292; --c-pizza: #ff8a65; --c-butcher: #e57373; --c-market: #f2b84b; --c-breakfast: #f0d264; --c-pies: #e0a060; --c-indian: #ffad4d; --c-mexican: #7ed492; --c-steak: #f0907e; --c-pasta: #e8bd5c; --c-fresh: #6fd39a; --c-frozen: #7fb6ef; --c-cafe: #c89a74; --c-pending: #b896ee; --c-you: #7fb0e6; --c-all: #7fa8ff;
     }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -638,8 +638,8 @@ const BASE = [
   { id: "m-qualiko", name: "كواليكو", en: "Qualiko", alt: "qualiko كوالكو", emoji: "🐔", types: ["دياي الجمعية"], country: "أوكرانيا", ev: "directory", meat: "none", chicken: "no", note: "ماركة MHP الأوكرانية." },
 ];
 
-const TYPES = { "عيوش": "rice", "مشاوي": "grill", "برجر": "burger", "ساندويتشات وشاورما": "sand", "صحي": "healthy", "ياباني وصيني": "asian", "بيتزا": "pizza", "بشاميل وباستا": "pasta", "ملاحم": "butcher", "قهاوي": "cafe", "ريوق": "breakfast", "فطاير": "pies", "هندي": "indian", "ستيكات": "steak", "دياي الجمعية": "market" };
-const TE = { "أكل كويتي": "🍛", "عيوش": "🍚", "دياي ومقليات": "🍗", "مشاوي": "🍢", "برجر": "🍔", "ساندويتشات وشاورما": "🌯", "صحي": "🥗", "ياباني وصيني": "🍣", "بيتزا": "🍕", "بشاميل وباستا": "🍝", "ملاحم": "🥩", "قهاوي": "☕", "ريوق": "🍳", "فطاير": "🥟", "هندي": "🍛", "ستيكات": "🥩", "دياي الجمعية": "🐔" };
+const TYPES = { "عيوش": "rice", "مشاوي": "grill", "برجر": "burger", "ساندويتشات وشاورما": "sand", "صحي": "healthy", "ياباني وصيني": "asian", "بيتزا": "pizza", "بشاميل وباستا": "pasta", "ملاحم": "butcher", "قهاوي": "cafe", "ريوق": "breakfast", "فطاير": "pies", "هندي": "indian", "مكسيكي": "mexican", "ستيكات": "steak", "دياي الجمعية": "market" };
+const TE = { "أكل كويتي": "🍛", "عيوش": "🍚", "دياي ومقليات": "🍗", "مشاوي": "🍢", "برجر": "🍔", "ساندويتشات وشاورما": "🌯", "صحي": "🥗", "ياباني وصيني": "🍣", "بيتزا": "🍕", "بشاميل وباستا": "🍝", "ملاحم": "🥩", "قهاوي": "☕", "ريوق": "🍳", "فطاير": "🥟", "هندي": "🍛", "مكسيكي": "🌮", "ستيكات": "🥩", "دياي الجمعية": "🐔" };
 const EV_LABEL = { you: ["💬 بدون دليل", "s-you"], official: ["رسمي", "s-official"], directory: ["دليل مطاعم", "s-directory"], proof: ["📎 دليل", "s-proof"], weak: ["ضعيف", "s-weak"] };
 const VAL_TXT = { ok: "✅", no: "❌", partial: "⚠️", unk: "❓", none: "—" };
 
@@ -729,6 +729,7 @@ const FILTERS = [
   { id: "breakfast", c: "breakfast", label: "🍳 ريوق", fn: r => r.types.includes("ريوق") },
   { id: "steak", c: "steak", label: "🥩 ستيكات", fn: r => r.types.includes("ستيكات") },
   { id: "indian", c: "indian", label: "🍛 هندي", fn: r => r.types.includes("هندي") },
+  { id: "mexican", c: "mexican", label: "🌮 مكسيكي", fn: r => r.types.includes("مكسيكي") },
   { id: "pies", c: "pies", label: "🥟 فطاير", fn: r => r.types.includes("فطاير") },
   { id: "cafe", c: "cafe", label: "☕ قهاوي", fn: r => r.types.includes("قهاوي") },
   { id: "avoid", c: "meat", label: "🚫 تجنّب", fn: r => r.meat === "no" || r.chicken === "no" },

@@ -503,5 +503,11 @@
 "umwe53ut9": {
 "logo": "lg-umwe53ut9",
 "ev": []
+},
+"utacostreet": {
+"logo": "lg-taco",
+"ev": [
+"ev-taco"
+]
 }
 }
